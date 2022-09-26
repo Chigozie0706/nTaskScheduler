@@ -11,7 +11,7 @@
  * https://docs.near.org/docs/develop/contracts/as/intro
  *
  */
-
+import { Product, listedProducts } from './model';
 import { Context, logging, storage } from "near-sdk-as";
 
 const DEFAULT_MESSAGE = "Hello";
@@ -47,4 +47,25 @@ export function setGreeting(message: string): void {
       timestamp / 1000000
     ).toTimeString()}`
   );
+}
+
+
+export function setProduct(product: Product): void {
+    let storedProduct = listedProducts.get(product.id);
+    if (storedProduct !== null) {
+        throw new Error(`a product with ${product.id} already exists`);
+    }
+    listedProducts.set(product.id, Product.fromPayload(product));
+}
+
+export function getProduct(id: string): Product | null {
+    return listedProducts.get(id);
+}
+
+export function getProducts(): Product[] {
+    return listedProducts.values();
+}
+
+export function updateProduct(id: string, name: string): void {
+  Product.updateProduct(id, name);
 }

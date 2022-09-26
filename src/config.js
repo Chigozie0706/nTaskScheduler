@@ -1,5 +1,5 @@
 const CONTRACT_NAME =
-  process.env.CONTRACT_NAME || "near-tutorial.lkskrnk.testnet";
+  process.env.CONTRACT_NAME || "simple.chigozie0706.testnet";
 
 function getConfig(env) {
   switch (env) {
