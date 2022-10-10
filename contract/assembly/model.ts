@@ -1,45 +1,49 @@
 import { PersistentUnorderedMap, u128, context } from "near-sdk-as";
 
 @nearBindgen
-export class Product {
+export class Task {
     id: string;
-    name: string;
-    description: string;
-    image: string;
-    location: string;
-    price: u128;
-    owner: string;
-    sold: u32;
-
-    public static fromPayload(payload: Product): Product {
-        const product = new Product();
-        product.id = payload.id;
-        product.name = payload.name;
-        product.description = payload.description;
-        product.image = payload.image;
-        product.location = payload.location;
-        product.price = payload.price;
-        product.owner = context.sender;
-        return product;
+    taskName: string;
+    taskDescription: string;
+    dateCreated: u64;
+    status: string;
+    
+    public static fromPayload(payload: Task): Task {
+        const task = new Task();
+        task.id = payload.id;
+        task.taskName = payload.taskName;
+        task.taskDescription = payload.taskDescription;
+        task.dateCreated = context.blockTimestamp;
+        task.status = "pending";
+        return task;
     }
 
-    public incrementSoldAmount(): void {
-        this.sold = this.sold + 1;
-    }
+    
 
-    public static updateProduct(
-        id: string,
-        name: string
+    public static updateTask(
+        id: string
     ): void {
-        const product = listedProducts.get(id);
+        const task = listedTasks.get(id);
 
-        if (product == null) throw new Error("drug not found");
+        if (task == null) throw new Error("task not found");
         else {
-            product.name = name;
-            listedProducts.set(product.id, product);
+            task.status = "done";
+            listedTasks.set(task.id, task);
+        }
+    }
+
+
+    public static deleteTask(
+        id: string
+    ): void {
+        const beat = listedTasks.get(id);
+
+        if (beat == null) throw new Error("drug not found");
+        else {
+            listedTasks.delete(beat.id);
         }
     }
 }
 
 
-export const listedProducts = new PersistentUnorderedMap<string, Product>("LISTED_PRODUCTS");
+export const listedTasks = new PersistentUnorderedMap<string,Task>("tasks");

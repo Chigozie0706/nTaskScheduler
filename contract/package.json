@@ -1,5 +1,5 @@
 {
-  "name": "greeter",
+  "name": "taskscheduler",
   "scripts": {
     "build": "asb",
     "build:debug": "asb --target debug",
