@@ -1,4 +1,4 @@
-import { PersistentUnorderedMap, u128, context } from "near-sdk-as";
+import { PersistentUnorderedMap, u128, context, logging } from "near-sdk-as";
 
 @nearBindgen
 export class Task {
@@ -36,6 +36,7 @@ export class Task {
     public static deleteTask(
         id: string
     ): void {
+    logging.log(`deleting task`);
         const beat = listedTasks.get(id);
 
         if (beat == null) throw new Error("drug not found");

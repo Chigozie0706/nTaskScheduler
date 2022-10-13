@@ -17,7 +17,7 @@ import {
 } from "../simple";
 
 
-const CheckTaskModal = ({closeModal, save, toggle, modal, update, taskId, taskDetails = {} }) => {
+const CheckTaskModal = ({closeModal, toggle, modal, update, taskId, taskDetails = {} }) => {
   // const navigate =useNavigate()
   const [taskName, setTaskName] = useState("");
   
@@ -89,23 +89,7 @@ isOpen={modal}
   }
   </ModalBody>
   <ModalFooter>
-  <Button
-            variant="dark"
-            disabled={!isFormFilled()}
-            onClick={() => {
-              save(id, {
-                taskName
-              });
-
-              // update(id,
-              //  taskName
-              // );
-              handleClose();
-            }}
-          >
-            Create
-          </Button>
-
+  
           <Button onClick={() => updateBeats(taskId, taskName)}>Fetch</Button>
          
           <Button onClick={() => closeModal(false)}>Close</Button>
@@ -119,10 +103,9 @@ isOpen={modal}
 };
 
 CheckTaskModal.propTypes = {
-  save: PropTypes.func.isRequired,
+  
   closeModal: PropTypes.func.isRequired,
-  // update: PropTypes.func.isRequired,
-
+  
 };
 
 export default CheckTaskModal;

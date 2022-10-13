@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-// import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import CreateTaskModal from "./CreateTaskModal";
 import ViewTaskModal from "./ViewTaskModal"
-import { Row, Button, Table } from "reactstrap";
+import { Row, Button, Table, Spinner } from "reactstrap";
 import {
   getTasks,
   createTask, updateTaskById, getTaskById, deleteTaskById
@@ -18,7 +18,8 @@ const TaskLists = () => {
    const [taskId, setTaskId] = useState(null)
    const [taskDetails, setTaskDetails] = useState({})
    
-  const getTaskLists = useCallback(async () => {
+//This is a function to fetch all task created.  
+const getTaskLists = useCallback(async () => {
     try {
       setLoading(true);
       setTaskLists(await getTasks());
@@ -32,25 +33,26 @@ const TaskLists = () => {
 
   console.log(taskLists)
 
-
-
+//This is a function to create a new task.
 const addTask = async (data) => {
   try {
     setLoading(true);
     createTask(data).then((resp) => {
        console.log(resp)
-       getTasks()
-      // getProducts();
+       getTaskLists()
+       toast.success("Task added successfully")
     });
-    // toast(<NotificationSuccess text="Product added successfully." />);
+
   } catch (error) {
     console.log({ error });
-    // toast(<NotificationError text="Failed to create a product." />);
+    toast.error("network error")
   } finally {
     setLoading(false);
   }
 };
 
+
+//This is a function used to toggle a modal where you can create a task.
 const toggleCreateTaskModal = () => {
   setCreateTaskModal(!createTaskModal)
 }
@@ -67,6 +69,8 @@ const updateTask = async (id) => {
   }
 }
 
+
+//This is a function used to delete a task.
 const deleteTask = async (id) => {
   try{
     deleteTaskById(id)
@@ -84,10 +88,6 @@ const toggleCheckListModal = (id) => {
   setUpdateTaskModal(!updateTaskModal)
 
 }
-
-useEffect(() => {
-  getTaskLists();
-}, []);
 
 const getTaskDetails = async (taskId) => {
   try{
@@ -108,6 +108,12 @@ const closeModal = (data) => {
 }
 
 
+useEffect(() => {
+  getTaskLists();
+}, []);
+
+
+
 return (
   <>
   <Button color="success" 
@@ -124,7 +130,18 @@ return (
 
 <CreateTaskModal createTask={addTask} 
 modal={createTaskModal} toggle={toggleCreateTaskModal} id={taskLists.length} />
-        
+     
+     {loading === true ?
+    <div className="text-center" style={{marginTop : 200}}>
+    <Spinner />
+    <p>loading...</p>
+    </div>
+    :
+    taskLists.length === 0 ?
+    <div className="text-center" style={{marginTop : 100}}>
+          <p>No task created ...</p>
+          </div>
+        :   
                   
         <Table >
           <thead>
@@ -157,6 +174,7 @@ modal={createTaskModal} toggle={toggleCreateTaskModal} id={taskLists.length} />
 
 </tbody>
           </Table>
+        }
           </>
           )
 }

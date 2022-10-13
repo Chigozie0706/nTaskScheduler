@@ -5,6 +5,7 @@ import "./global.css";
 // import Products from "./Components/Products"
 import TaskLists from "./Components/TaskLists"
 import getConfig from "./config";
+import { Toaster } from "react-hot-toast";
 
 
 
@@ -85,15 +86,16 @@ export default function App() {
               borderBottom: "2px solid var(--secondary)",
             }}
           >
-            {greeting}
+            Hello
           </label>
           {
             " " /* React trims whitespace around tags; insert literal space character when needed */
           }
           {window.accountId}!
         </h1>
-        <h3 style={{ textAlign: "center" }}>Last Update: {updateDate} </h3>
-        <p>{d.toString()}</p>
+        
+        {// <p>{d.toString()}</p>
+      }
         <form
           onSubmit={async (event) => {
             event.preventDefault();
@@ -142,7 +144,7 @@ export default function App() {
         </form>
         <TaskLists />
 
-        
+        <Toaster />
 
       </main>
       {showNotification && <Notification />}

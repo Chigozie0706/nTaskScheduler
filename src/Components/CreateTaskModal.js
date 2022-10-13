@@ -35,7 +35,7 @@ const CreateTaskModal = ({ createTask, toggle,
   </ModalBody>
   <ModalFooter>
   <Button
-            variant="dark"
+            color="success"
             size="sm"
             onClick={() => {
               createTask({
